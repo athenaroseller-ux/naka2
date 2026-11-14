@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niskala Wear — Contemporary Daily Wear & Essentials</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        niskalaBg: '#F3EFE6',
+                        niskalaCream: '#FAF6F0',
+                        niskalaTerracotta: '#C17E66',
+                        niskalaSage: '#A2BFA6',
+                        niskalaDark: '#333333',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F3EFE6;
+            color: #333333;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3EFE6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #A2BFA6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C17E66;
+        }
+    </style>
+</head>
+<body class="bg-niskalaBg text-niskalaDark antialiased selection:bg-niskalaTerracotta selection:text-white">
+
+    <!-- Notification Toast (No alert() used) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-niskalaDark text-white px-6 py-3 rounded-xl shadow-xl flex items-center space-x-3 text-sm">
+        <i class="fa-solid fa-circle-check text-niskalaSage text-lg"></i>
+        <span id="toastMessage">Produk berhasil ditambahkan ke keranjang!</span>
+    </div>
+
+    <!-- 1. Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-niskalaBg/90 backdrop-blur-md border-b border-[#e6dcd0] transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-niskalaSage/30 flex items-center justify-center border border-niskalaSage group-hover:bg-niskalaTerracotta group-hover:text-white transition-all duration-300">
+                    <span class="font-serif font-bold text-lg">N</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold tracking-widest text-lg text-niskalaDark">NISKALA</span>
+                    <span class="text-[10px] tracking-widest text-niskalaTerracotta uppercase font-medium">Wear</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#home" class="hover:text-niskalaTerracotta transition-colors">Home</a>
+                <a href="#about" class="hover:text-niskalaTerracotta transition-colors">About Us</a>
+                <a href="#products" class="hover:text-niskalaTerracotta transition-colors">Our Products</a>
+                <a href="#testimonials" class="hover:text-niskalaTerracotta transition-colors">Testimonials</a>
+                <a href="#stores" class="hover:text-niskalaTerracotta transition-colors">Our Stores</a>
+                <a href="#contact" class="hover:text-niskalaTerracotta transition-colors">Contact Us</a>
+            </nav>
+
+            <!-- Right Actions -->
+            <div class="flex items-center space-x-4">
+                <button onclick="openCart()" class="relative p-2.5 rounded-full hover:bg-niskalaCream transition-colors" title="Keranjang Belanja">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cartCount" class="absolute top-1 right-1 w-4 h-4 bg-niskalaTerracotta text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-niskalaCream">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-niskalaCream border-b border-[#e6dcd0] px-6 py-4 space-y-3">
+            <a href="#home" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">Home</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">About Us</a>
+            <a href="#products" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">Our Products</a>
+            <a href="#testimonials" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">Testimonials</a>
+            <a href="#stores" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">Our Stores</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block font-medium hover:text-niskalaTerracotta">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- 2. Hero Section -->
+    <section id="home" class="relative py-16 md:py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Hero Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 bg-niskalaSage/20 border border-niskalaSage/40 px-3.5 py-1.5 rounded-full text-xs font-medium text-niskalaDark">
+                        <span class="w-2 h-2 rounded-full bg-niskalaTerracotta animate-pulse"></span>
+                        <span>Koleksi Terbaru 2026 • Timeless & Aesthetic</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-niskalaDark leading-tight">
+                        Comfort in <span class="text-niskalaTerracotta italic font-serif">Simplicity</span> & Style.
+                    </h1>
+                    <p class="text-base sm:text-lg text-gray-600 max-w-xl mx-auto lg:mx-0">
+                        Niskala Wear menghadirkan busana harian premium dengan sentuhan desain minimalis modern. Temukan kenyamanan dan ekspresikan gaya autentikmu setiap hari.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-3 sm:space-y-0 sm:space-x-4 pt-2">
+                        <a href="#products" class="w-full sm:w-auto px-8 py-3.5 bg-niskalaTerracotta hover:bg-[#b06d56] text-white font-medium rounded-xl shadow-lg shadow-niskalaTerracotta/20 transition-all text-center">
+                            Belanja Sekarang
+                        </a>
+                        <a href="#about" class="w-full sm:w-auto px-8 py-3.5 bg-niskalaCream hover:bg-[#eae3d5] border border-[#dcd2c4] text-niskalaDark font-medium rounded-xl transition-all text-center">
+                            Pelajari Filosofi Kami
+                        </a>
+                    </div>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-[#e6dcd0] max-w-lg mx-auto lg:mx-0 text-center lg:text-left">
+                        <div>
+                            <div class="text-2xl font-bold text-niskalaDark">100%</div>
+                            <div class="text-xs text-gray-500">Katun Premium</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-niskalaDark">6+</div>
+                            <div class="text-xs text-gray-500">Koleksi Utama</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-niskalaDark">4.9★</div>
+                            <div class="text-xs text-gray-500">Rating Pelanggan</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hero Aesthetic Banner Image -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Decorative background shape -->
+                        <div class="absolute -inset-4 bg-niskalaSage/30 rounded-3xl transform -rotate-2 -z-10"></div>
+                        <div class="absolute -inset-4 bg-niskalaTerracotta/10 rounded-3xl transform rotate-3 -z-10"></div>
+                        <div class="bg-niskalaCream p-4 rounded-2xl shadow-xl border border-white/60">
+                            <img src="https://placehold.co/600x750/FAF6F0/C17E66?text=Niskala+Wear+Lookbook" alt="Niskala Wear Hero Look" class="w-full h-[420px] sm:h-[480px] object-cover rounded-xl shadow-inner" onerror="this.src='https://placehold.co/600x750/FAF6F0/333333?text=Niskala+Wear';">
+                            <div class="mt-4 flex items-center justify-between px-2">
+                                <div>
+                                    <h3 class="font-semibold text-sm">Terra Vintage Outfit</h3>
+                                    <p class="text-xs text-gray-500">New Arrival Collection</p>
+                                </div>
+                                <span class="px-3 py-1 bg-niskalaTerracotta text-white text-xs font-medium rounded-full">Best Seller</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Section About Us -->
+    <section id="about" class="py-20 bg-niskalaCream border-y border-[#e6dcd0]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <span class="text-xs uppercase tracking-widest text-niskalaTerracotta font-semibold">About Us</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-niskalaDark">Cerita & Filosofi Niskala Wear</h2>
+                <div class="w-16 h-1 bg-niskalaTerracotta mx-auto rounded-full"></div>
+                <p class="text-gray-600 leading-relaxed text-sm sm:text-base">
+                    Berdiri sejak tahun 2024, Niskala Wear berawal dari visi untuk menciptakan pakaian lokal berkualitas tinggi yang memiliki "jiwa" dan karakter seni yang kuat. Didirikan oleh Zheta Tia Ayuni, brand ini mengusung filosofi bahwa busana bukan sekadar penutup tubuh, tetapi bentuk ekspresi diri yang abadi (<span class="italic font-serif">timeless</span>). Kami berkomitmen untuk selalu menghadirkan produk dengan jahitan rapi, material ramah kulit, serta harga yang tetap bersahabat bagi generasi muda.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Value Card 1 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-niskalaSage/30 rounded-2xl flex items-center justify-center mx-auto text-niskalaTerracotta text-2xl">
+                        <i class="fa-solid fa-feather"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Bahan Premium & Adem</h3>
+                    <p class="text-xs sm:text-sm text-gray-600">Dipilih dari material katun dan linen pilihan terbaik yang ramah kulit serta nyaman dipakai beraktivitas seharian.</p>
+                </div>
+                <!-- Value Card 2 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-niskalaSage/30 rounded-2xl flex items-center justify-center mx-auto text-niskalaTerracotta text-2xl">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Timeless Aesthetics</h3>
+                    <p class="text-xs sm:text-sm text-gray-600">Desain minimalis dan modern yang tidak lekang oleh waktu, mudah dipadupadankan untuk berbagai gaya OOTD.</p>
+                </div>
+                <!-- Value Card 3 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] text-center space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-niskalaSage/30 rounded-2xl flex items-center justify-center mx-auto text-niskalaTerracotta text-2xl">
+                        <i class="fa-solid fa-hands-holding-heart"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">Lokal Berkualitas</h3>
+                    <p class="text-xs sm:text-sm text-gray-600">Produksi lokal dengan standar kualitas tinggi, mendukung industri fesyen dalam negeri untuk bersaing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Section Our Products -->
+    <section id="products" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-niskalaTerracotta font-semibold">Our Collection</span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-niskalaDark mt-1">Produk Unggulan Kami</h2>
+                </div>
+                <p class="text-gray-600 text-sm max-w-md mt-3 md:mt-0">
+                    Pilih dan lengkapi lemari pakaianmu dengan 6 lini produk esensial dari Niskala Wear.
+                </p>
+            </div>
+
+            <!-- Product Grid (6 Products) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Product 1 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Oversized+Tee" alt="Niskala Basic Oversized Tee" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                        <span class="absolute top-3 left-3 bg-niskalaDark text-white text-[10px] uppercase font-semibold px-2.5 py-1 rounded-md">Best Seller</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Kaos Esensial</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Niskala Basic Oversized Tee</h3>
+                            <p class="text-xs text-gray-600 mt-1">Kaos katun combed premium berpotongan longgar, adem dan nyaman.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 130.000</span>
+                            <button onclick="addToCart('Niskala Basic Oversized Tee', 130000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Linen+Shirt" alt="Kala Linen Shirt" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                        <span class="absolute top-3 left-3 bg-niskalaSage text-niskalaDark text-[10px] uppercase font-semibold px-2.5 py-1 rounded-md">New</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Kemeja Kasual</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Kala Linen Shirt</h3>
+                            <p class="text-xs text-gray-600 mt-1">Kemeja linen kasual untuk tampilan rapi dan santai sepanjang hari.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 190.000</span>
+                            <button onclick="addToCart('Kala Linen Shirt', 190000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Pleated+Culottes" alt="Astra Pleated Culottes" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Celana Kulot</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Astra Pleated Culottes</h3>
+                            <p class="text-xs text-gray-600 mt-1">Celana kulot bertekstur yang anggun, longgar, dan sangat nyaman dipakai.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 215.000</span>
+                            <button onclick="addToCart('Astra Pleated Culottes', 215000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Denim+Jacket" alt="Terra Vintage Denim Jacket" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                        <span class="absolute top-3 left-3 bg-niskalaTerracotta text-white text-[10px] uppercase font-semibold px-2.5 py-1 rounded-md">Limited</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Outerwear</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Terra Vintage Denim Jacket</h3>
+                            <p class="text-xs text-gray-600 mt-1">Jaket denim dengan potongan modern dan sentuhan vintage yang stylish.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 280.000</span>
+                            <button onclick="addToCart('Terra Vintage Denim Jacket', 280000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Knit+Cardigan" alt="Solace Knit Cardigan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Rajut / Knitwear</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Solace Knit Cardigan</h3>
+                            <p class="text-xs text-gray-600 mt-1">Cardigan rajut ringan yang hangat, lembut, dan manis untuk OOTD harian.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 205.000</span>
+                            <button onclick="addToCart('Solace Knit Cardigan', 205000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="bg-niskalaCream rounded-2xl overflow-hidden border border-[#e6dcd0] shadow-sm hover:shadow-lg transition-all group flex flex-col justify-between">
+                    <div class="relative overflow-hidden bg-[#eae3d5] h-64">
+                        <img src="https://placehold.co/500x500/FAF6F0/C17E66?text=Lounge+Shorts" alt="Breeze Lounge Shorts" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/500x500/FAF6F0/333333?text=Product';">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Loungewear</div>
+                            <h3 class="font-bold text-lg text-niskalaDark">Breeze Lounge Shorts</h3>
+                            <p class="text-xs text-gray-600 mt-1">Celana pendek santai rumahan yang stylish dan sangat adem dipakai.</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-[#e6dcd0]">
+                            <span class="font-bold text-niskalaTerracotta text-lg">Rp 95.000</span>
+                            <button onclick="addToCart('Breeze Lounge Shorts', 95000)" class="px-4 py-2 bg-niskalaTerracotta hover:bg-[#b06d56] text-white text-xs font-medium rounded-xl transition-colors flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Section Testimonials -->
+    <section id="testimonials" class="py-20 bg-niskalaCream border-y border-[#e6dcd0]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <span class="text-xs uppercase tracking-widest text-niskalaTerracotta font-semibold">Testimonials</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-niskalaDark">Kata Pelanggan Niskala</h2>
+                <div class="w-16 h-1 bg-niskalaTerracotta mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] flex flex-col justify-between space-y-6 shadow-sm">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-500 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm italic">
+                            "Suka banget sama potongan oversized tee Niskala, bahannya tebal tapi tetap adem dipakai seharian buat kuliah!"
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-[#e6dcd0]">
+                        <div class="w-10 h-10 rounded-full bg-niskalaTerracotta text-white font-bold flex items-center justify-center text-sm">
+                            SP
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Sintia Putri</div>
+                            <div class="text-xs text-gray-500">Mahasiswa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] flex flex-col justify-between space-y-6 shadow-sm">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-500 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm italic">
+                            "Desainnya bener-bener estetik dan kekinian. Pas banget buat OOTD nongkrong atau jalan-jalan santai."
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-[#e6dcd0]">
+                        <div class="w-10 h-10 rounded-full bg-niskalaSage text-niskalaDark font-bold flex items-center justify-center text-sm">
+                            DA
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Dimas Arya</div>
+                            <div class="text-xs text-gray-500">Wiraswasta</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-niskalaBg p-8 rounded-2xl border border-[#e6dcd0] flex flex-col justify-between space-y-6 shadow-sm">
+                    <div class="space-y-4">
+                        <div class="flex text-amber-500 space-x-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 text-sm italic">
+                            "Pelayanannya ramah, pengiriman cepat, dan kualitas kemeja linennya juara banget gak gampang kusut."
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-[#e6dcd0]">
+                        <div class="w-10 h-10 rounded-full bg-niskalaDark text-white font-bold flex items-center justify-center text-sm">
+                            NZ
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm">Nabilla Zahra</div>
+                            <div class="text-xs text-gray-500">Karyawan Swasta</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Section Our Stores & Contact Us -->
+    <section id="stores" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Our Stores -->
+                <div class="bg-niskalaCream p-8 sm:p-10 rounded-3xl border border-[#e6dcd0] shadow-sm flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-niskalaSage/20 px-3 py-1 rounded-full text-xs font-semibold text-niskalaDark">
+                            <i class="fa-solid fa-store text-niskalaTerracotta"></i>
+                            <span>Flagship Store</span>
+                        </div>
+                        <h2 class="text-3xl font-bold text-niskalaDark">Kunjungi Toko Offline Kami</h2>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Ingin meraba langsung kualitas bahan dan mencoba pakaian kami? Silakan kunjungi toko fisik atau galeri kami di Palembang.
+                        </p>
+                        <div class="space-y-4 pt-4 border-t border-[#e6dcd0]">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-xl bg-niskalaTerracotta/10 text-niskalaTerracotta flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Alamat Toko</h4>
+                                    <p class="text-xs text-gray-600 mt-0.5">Kantin Tefa Bizmart / Jl. Demang Lebar Daun, Palembang</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 rounded-xl bg-niskalaTerracotta/10 text-niskalaTerracotta flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Jam Operasional</h4>
+                                    <p class="text-xs text-gray-600 mt-0.5">Senin – Sabtu: 09.00 - 17.00 WIB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-[#e6dcd0]">
+                        <a href="https://maps.google.com" target="_blank" class="w-full py-3 bg-niskalaDark hover:bg-black text-white text-xs font-medium rounded-xl transition-colors flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Buka di Google Maps</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Us -->
+                <div id="contact" class="bg-niskalaCream p-8 sm:p-10 rounded-3xl border border-[#e6dcd0] shadow-sm flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-niskalaTerracotta/15 px-3 py-1 rounded-full text-xs font-semibold text-niskalaDark">
+                            <i class="fa-solid fa-headset text-niskalaTerracotta"></i>
+                            <span>Customer Care</span>
+                        </div>
+                        <h2 class="text-3xl font-bold text-niskalaDark">Hubungi Kami</h2>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Punya pertanyaan seputar produk, pesanan, atau ingin bekerja sama? Hubungi tim kami melalui kontak di bawah ini.
+                        </p>
+                        <div class="space-y-4 pt-4 border-t border-[#e6dcd0]">
+                            <a href="https://wa.me/6281234567890" target="_blank" class="flex items-center space-x-4 p-3 rounded-xl hover:bg-niskalaBg transition-colors">
+                                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">WhatsApp Customer Service</h4>
+                                    <p class="text-xs text-gray-600">0812-3456-7890</p>
+                                </div>
+                            </a>
+                            <a href="https://instagram.com/niskalawear.official" target="_blank" class="flex items-center space-x-4 p-3 rounded-xl hover:bg-niskalaBg transition-colors">
+                                <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-brands fa-instagram text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Instagram Official</h4>
+                                    <p class="text-xs text-gray-600">@niskalawear.official</p>
+                                </div>
+                            </a>
+                            <div class="flex items-center space-x-4 p-3 rounded-xl">
+                                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-envelope text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm">Email Resmi</h4>
+                                    <p class="text-xs text-gray-600">care@niskalawear.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Footer -->
+    <footer class="bg-niskalaDark text-white pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-gray-800">
+                <!-- Col 1 -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-niskalaTerracotta flex items-center justify-center text-white font-serif font-bold text-lg">
+                            N
+                        </div>
+                        <span class="font-bold tracking-widest text-lg">NISKALA WEAR</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Contemporary daily wear & essentials for your everyday aesthetic lifestyle.
+                    </p>
+                </div>
+                <!-- Col 2 -->
+                <div class="space-y-3">
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-niskalaSage">Menu Utama</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#products" class="hover:text-white transition-colors">Our Products</a></li>
+                        <li><a href="#testimonials" class="hover:text-white transition-colors">Testimonials</a></li>
+                    </ul>
+                </div>
+                <!-- Col 3 -->
+                <div class="space-y-3">
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-niskalaSage">Koleksi</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><span class="hover:text-white cursor-pointer">Oversized Tees</span></li>
+                        <li><span class="hover:text-white cursor-pointer">Linen Shirts</span></li>
+                        <li><span class="hover:text-white cursor-pointer">Pleated Culottes</span></li>
+                        <li><span class="hover:text-white cursor-pointer">Denim Jackets</span></li>
+                    </ul>
+                </div>
+                <!-- Col 4 -->
+                <div class="space-y-3">
+                    <h4 class="font-semibold text-sm tracking-wider uppercase text-niskalaSage">Newsletter</h4>
+                    <p class="text-xs text-gray-400">Dapatkan info promo & koleksi terbaru langsung ke emailmu.</p>
+                    <div class="flex space-x-2 pt-2">
+                        <input type="email" placeholder="Email kamu..." class="bg-gray-800 border border-gray-700 text-xs px-3 py-2 rounded-lg text-white focus:outline-none focus:border-niskalaTerracotta w-full">
+                        <button onclick="showToast('Terima kasih telah berlangganan!')" class="bg-niskalaTerracotta hover:bg-[#b06d56] px-4 py-2 rounded-lg text-xs font-medium transition-colors">Kirim</button>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
+                <p>&copy; 2026 PT Niskala Cipta Busana (Niskala Wear). All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-gray-400">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-gray-400">Syarat & Ketentuan</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal / Drawer simulation -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex justify-end transition-opacity duration-300">
+        <div class="bg-niskalaBg w-full max-w-md h-full shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-300">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-[#e6dcd0]">
+                    <h3 class="font-bold text-lg flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-niskalaTerracotta"></i>
+                        <span>Keranjang Belanja</span>
+                    </h3>
+                    <button onclick="closeCart()" class="p-2 rounded-lg hover:bg-niskalaCream text-gray-500 hover:text-black">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div id="cartItemsList" class="py-6 space-y-4 overflow-y-auto max-h-[60vh]">
+                    <!-- Dynamically populated or empty -->
+                    <div class="text-center text-gray-500 py-12" id="emptyCartText">
+                        Keranjang belanja kamu masih kosong.
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-[#e6dcd0] pt-4 space-y-4">
+                <div class="flex items-center justify-between font-bold">
+                    <span>Total:</span>
+                    <span id="cartTotalPrice" class="text-niskalaTerracotta text-lg">Rp 0</span>
+                </div>
+                <button onclick="checkout()" class="w-full py-3.5 bg-niskalaTerracotta hover:bg-[#b06d56] text-white font-medium rounded-xl transition-colors shadow-md">
+                    Checkout Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        let cart = [];
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            showToast(`${name} berhasil ditambahkan!`);
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cartCount');
+            const listEl = document.getElementById('cartItemsList');
+            const totalEl = document.getElementById('cartTotalPrice');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            countEl.textContent = totalItems;
+
+            if (cart.length === 0) {
+                listEl.innerHTML = `<div class="text-center text-gray-500 py-12">Keranjang belanja kamu masih kosong.</div>`;
+                totalEl.textContent = 'Rp 0';
+                return;
+            }
+
+            let html = '';
+            let totalPrice = 0;
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                totalPrice += subtotal;
+                html += `
+                    <div class="flex items-center justify-between bg-niskalaCream p-4 rounded-xl border border-[#e6dcd0]">
+                        <div>
+                            <h4 class="font-bold text-sm">${item.name}</h4>
+                            <p class="text-xs text-gray-500">Rp ${item.price.toLocaleString('id-ID')} x ${item.qty}</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="font-bold text-sm text-niskalaTerracotta">Rp ${subtotal.toLocaleString('id-ID')}</span>
+                            <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 text-xs p-1">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+            totalEl.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            showToast('Produk dihapus dari keranjang.');
+        }
+
+        function openCart() {
+            document.getElementById('cartDrawer').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.add('hidden');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Keranjang masih kosong!');
+                return;
+            }
+            showToast('Pesanan berhasil dibuat! Menuju WhatsApp...');
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                closeCart();
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
